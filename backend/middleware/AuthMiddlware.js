@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import User from "../models/UserModel.js";
+import Passenger from "../models/PassengerModel.js";
 import asyncHandler from "express-async-handler";
 
 const protect = asyncHandler(async (req, res) => {
@@ -18,7 +18,7 @@ const protect = asyncHandler(async (req, res) => {
             const decoded = jwt.verify(token, process.env.JWT_SCRET);
 
             // Get the user from the token
-            req.user = await User.findOne(decoded.id).select("-password");
+            req.user = await Passenger.findOne(decoded.id).select("-password");
             next();
         } catch (error) {
             console.log(error);

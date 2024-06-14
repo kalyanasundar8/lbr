@@ -112,7 +112,7 @@ const adminSignin = asyncHandler(async (req, res) => {
       adminName: admin.adminName,
       companyType: admin.companyType,
       mobileNumber: admin.mobileNumber,
-      token: generateToken(user._id),
+      token: generateToken(admin._id),
       mssg: "We sent a OTP to you mobileNumber, Just verify and continue this account",
     });
   } else {

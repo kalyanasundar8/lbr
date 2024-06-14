@@ -14,6 +14,7 @@ const adminSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    busList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bus" }],
     otp: {
       type: String,
       required: true,
