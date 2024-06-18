@@ -6,6 +6,7 @@ import passengerRouter from "./routes/PassengerRoutes.js";
 import dbConn from "./config/dbConnection.js";
 import adminRoutes from "./routes/AdminRoutes.js";
 import busRoute from "./routes/BusRoutes.js";
+import pathWayRoute from "./routes/Bus.Routes.js";
 
 // App
 const app = express();
@@ -24,6 +25,7 @@ app.use(parser.urlencoded({ extended: true }));
 app.use("/api/passengers", passengerRouter);
 app.use("/api/admin", adminRoutes);
 app.use("/api/bus", busRoute);
+app.use("/api/pathWays", pathWayRoute);
 
 // Server
 app.listen(port, () => {

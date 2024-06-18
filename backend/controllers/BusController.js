@@ -4,7 +4,7 @@ import Admin from "../models/AdminModel.js";
 
 //! Register a bus
 const registerBus = asyncHandler(async (req, res) => {
-  const { companyId, busName, seatingCapacity, registrationNumber, busNumber } =
+  const { companyId, busName, seatingCapacity, registrationNumber, busNumber, busRoutes } =
     req.body;
 
   if (!busName || !seatingCapacity || !registrationNumber) {
@@ -19,6 +19,7 @@ const registerBus = asyncHandler(async (req, res) => {
       seatingCapacity,
       registrationNumber,
       busNumber,
+      busRoutes,
     });
     await Admin.findByIdAndUpdate(companyId, { $push: { busList: bus._id } });
     res.status(201).json({
@@ -28,6 +29,7 @@ const registerBus = asyncHandler(async (req, res) => {
       seatingCapacity: bus.seatingCapacity,
       registrationNumber: bus.registrationNumber,
       busNumber: bus.busNumber,
+      busRoutes: bus.busRoutes,
     });
   } else {
     res.status(400).json({ mssg: "The registration number already exists " });
@@ -55,8 +57,6 @@ const getBusDetails = asyncHandler(async (req, res) => {
 });
 
 //! Get bus list
-const busList = asyncHandler(async (req, res) => {
-  
-})
+const busList = asyncHandler(async (req, res) => {});
 
 export { registerBus, getBusDetails };

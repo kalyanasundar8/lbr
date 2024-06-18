@@ -22,6 +22,7 @@ const busSchema = new Schema(
     busNumber: {
       type: String,
     },
+    busRoutes: [{ type: mongoose.Schema.Types.ObjectId, ref: "BusRoutes" }],
     rating: {
       type: String,
     },
