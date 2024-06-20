@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { verifyUserOtp } from "../services/AuthServices";
 import { ErrorMessage } from "../services/ErrorMessage";
+import { setUser } from "../redux/actions/AuthActions";
 
 const VerifyOtpPage = () => {
   const navigate = useNavigate();
@@ -26,8 +27,28 @@ const VerifyOtpPage = () => {
       token: token,
     };
 
-    const response = await verifyUserOtp(payload);
-    console.log(response);
+    try {
+      const response = await verifyUserOtp(payload);
+      if (response?.status === 200) {
+        const token = response?.data?.token;
+        const userData = response?.data;
+
+        dispatch(setUser(response?.data));
+
+         // Set the user data in local storage
+         localStorage.setItem("userToken", token);
+         localStorage.setItem("userData", JSON.stringify(userData));
+         
+        navigate("/");
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log(error?.response?.data?.mssg);
+      if (error.response.status === 400) {
+        setErrorMessage(error?.response?.data?.mssg);
+      }
+    }
   };
 
   return (

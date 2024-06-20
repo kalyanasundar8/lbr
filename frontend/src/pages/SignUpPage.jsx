@@ -28,10 +28,6 @@ const SignUpPage = () => {
         const token = response?.data?.token;
         const userData = response?.data;
 
-        // Set the user data in local storage
-        localStorage.setItem('userToken', token);
-        localStorage.setItem('userData', JSON.stringify(userData));
-
         dispatch(setUser(response?.data));
         navigate("/verifyotp", { state: token });
       } else {

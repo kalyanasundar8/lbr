@@ -53,13 +53,20 @@ const verifyOTP = asyncHandler(async (req, res) => {
 
   if (PassengerExists) {
     if (PassengerExists.otp === otp) {
-      await Passenger.findOneAndUpdate(
+      const user = await Passenger.findOneAndUpdate(
         { _id: PassengerId },
         {
           verified: true,
-        }
+        },
+        { new: true }
       );
-      res.status(200).json({ mssg: "Verified sucessfuly" });
+      res.status(200).json({
+        id: user._id,
+        PassengerName: user.passengerName,
+        mobileNumber: user.mobileNumber,
+        verified: user.verified,
+        token: generateToken(user._id),
+      });
     } else if (PassengerExists.signinOtp === otp) {
       res.status(200).json({
         id: PassengerExists._id,
