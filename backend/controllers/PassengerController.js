@@ -38,7 +38,7 @@ const signupPassenger = asyncHandler(async (req, res) => {
       token: generateToken(passenger._id),
     });
   } else {
-    res.status(400).json({ err: "Mobile number already exists" });
+    res.status(400).json({ mssg: "Mobile number already exists" });
   }
 });
 

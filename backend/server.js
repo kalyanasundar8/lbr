@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 dotenv.config()
 import parser from "body-parser"
+import cors from "cors";
 import passengerRouter from "./routes/PassengerRoutes.js";
 import dbConn from "./config/dbConnection.js";
 import adminRoutes from "./routes/AdminRoutes.js";
@@ -16,6 +17,8 @@ dbConn();
 
 // Port
 const port = process.env.PORT;
+
+app.use(cors())
 
 // Middleware
 app.use(parser.json());

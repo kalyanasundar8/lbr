@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/actions/AuthActions";
-import { Link, useNavigate } from "react-router-dom";
-
-// Services
-import { userSignUp } from "../services/AuthServices";
+import { userSignIn } from "../services/AuthServices";
 import { ErrorMessage } from "../services/ErrorMessage";
+import { useForm } from "react-hook-form";
+import { setUser } from "../redux/actions/AuthActions";
 
-const SignUpPage = () => {
+const SignInPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,17 +19,12 @@ const SignUpPage = () => {
     formState: { errors },
   } = useForm();
 
-  const signUpPassenger = async (data) => {
+  const signInPassenger = async (data) => {
     try {
-      const response = await userSignUp(data);
-      console.log(response.response);
-      if (response?.status === 201) {
+      const response = await userSignIn(data);
+      if (response?.status === 200) {
         const token = response?.data?.token;
         const userData = response?.data;
-
-        // Set the user data in local storage
-        localStorage.setItem('userToken', token);
-        localStorage.setItem('userData', JSON.stringify(userData));
 
         dispatch(setUser(response?.data));
         navigate("/verifyotp", { state: token });
@@ -48,31 +42,11 @@ const SignUpPage = () => {
   return (
     <div>
       <section className="flex flex-col items-center mt-[150px]">
-        <h1 className="text-2xl font-primaryFont font-bold mb-3">Sign Up</h1>
+        <h1 className="text-2xl font-primaryFont font-bold mb-3">Sign In</h1>
         <form
-          onSubmit={handleSubmit(signUpPassenger)}
+          onSubmit={handleSubmit(signInPassenger)}
           className="flex items-center flex-col"
         >
-          <div className="flex flex-col">
-            <input
-              type="text"
-              name="passengerName"
-              className={`${
-                errors.passengerName
-                  ? "border-2 border-red-500 rounded-[5px] w-[320px] px-[10px] py-[5px] my-2 placeholder:text-[15px]"
-                  : "border-2 border-gray-300 rounded-[5px] w-[320px] px-[10px] py-[5px] placeholder:text-[15px]"
-              }`}
-              placeholder="UserName"
-              {...register("passengerName", {
-                required: "Username is required",
-              })}
-            />
-            {errors.passengerName && (
-              <p className="text-[12px] font-medium text-red-500">
-                {errors.passengerName.message}
-              </p>
-            )}
-          </div>
           <div className="flex flex-col my-2">
             <input
               type="text"
@@ -97,14 +71,16 @@ const SignUpPage = () => {
             Continue
           </button>
           <p className="text-sm">
-            I already have an account?{" "}
-            <Link to="/signin" className="text-green-500 font-medium">Sign In</Link>
+            I don't have an account?{" "}
+            <Link to="/signup" className="text-green-500 font-medium">
+              Sign Up
+            </Link>
           </p>
         </form>
       </section>
-      {errorMessage ? <ErrorMessage error={errorMessage} /> : " "}
+      {errorMessage ? <ErrorMessage error={errorMessage} /> : ""}
     </div>
   );
 };
 
-export default SignUpPage;
+export default SignInPage;
